@@ -2,6 +2,8 @@
 
 Making it easier to start using [FSL](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/) on e.g. HPC.
 
+[![https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg](https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg)](https://singularity-hub.org/collections/2514)
+
 ## License
 
 See [LICENSE.txt](LICENSE.txt), particularly the conditions regarding commercial use.
