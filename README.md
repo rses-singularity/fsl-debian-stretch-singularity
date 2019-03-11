@@ -6,29 +6,39 @@ Making it easier to start using [FSL](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/) o
 
 See [LICENSE.txt](LICENSE.txt), particularly the conditions regarding commercial use.
 
-## Preparations
+## Running FSL within a Singularity container using this Singularity image definition 
 
-1. Make sure you have Singularity installed.
-2. Ensure you're read the [FSL license](LICENSE.txt).
-4. If `/tmp` is 'small' (e.g. 'only' 16GB) then Singularity will run out of space when trying to build your image, 
-   so you may want to create a directory somewhere else for Singularity to write temporary files to:
-
-    ```sh
-    mkdir -p -m 0700 $HOME/.cache/singularity 
-    ```
-## Building the image
-
-The build process as defined in our `Singularity` file installs 
-FSL plus 
-the [FSL Evaluation and Example Data Suite (FEEDS)](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FEEDS).
+The quickest way to start using FSL via this Singularity image is to 
+pull the image from the [SingularityHub](http://singularity-hub.org/) on-line repository:
 
 ```sh
-sudo SINGULARITY_TMPDIR=$HOME/.cache/singularity singularity build ./fsl-debian-stretch-singularity.sif ./Singularity
+export SINGULARITY_CACHEDIR="/home/$USER/singularity_cache"
+mkdir -p "${SINGULARITY_CACHEDIR}"
+singularity pull --name fsl-debian-stretch-singularity-latest.sif shub://rses-singularity/fsl-debian-stretch-singularity:latest 
+singularity exec "${SINGULARITY_CACHEDIR}/fsl-debian-stretch-singularity-latest.sif" /bin/bash
 ```
 
-## Starting FSL inside a container
+After running `singularity exec` you are then able to run commands 'within' a FSL 'container' e.g. 
+`fsl-selftest` or `fsl5.0-gps`. Note that most FSL commands start with `fsl5.0-`.
 
-To run the container from this image:
+A note re SingularityHub: the [FSL image provided via SingularityHub](https://www.singularity-hub.org/collections/2514) is 
+rebuilt whenever there is a push to this GitHub repository.
+
+## Building a Singularity image and running a FSL container *without* using SingularityHub
+
+If you don't want to use the SingularityHub-built image then you can build it yourself **on your own machine** (not HPC):
+
+ 1. Make sure you have Singularity installed.
+ 1. Ensure you're read the [FSL license](LICENSE.txt).
+ 1. Inspect the [Singularity image definition in this repo](Singularity); this includes steps to:
+      - Install FSL.
+      - Install the [FSL Evaluation and Example Data Suite (FEEDS)](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FEEDS).
+ 1. Start building an image file:
+    ```sh
+    sudo SINGULARITY_TMPDIR=$HOME/.cache/singularity singularity build ./fsl-debian-stretch-singularity.sif ./Singularity
+    ```
+
+To start a FSL container using this image:
 
 ```sh
 singularity exec ./fsl-debian-stretch-singularity.sif /bin/bash
